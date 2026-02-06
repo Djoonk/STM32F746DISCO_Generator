@@ -1,0 +1,232 @@
+{
+  "Application": {
+    "Screens": [
+      {
+        "Name": "Screen1",
+        "Components": [
+          {
+            "Type": "Image",
+            "Name": "image1",
+            "Width": 480,
+            "Height": 272,
+            "RelativeFilename": "__generated\\dark_theme_images_backgrounds_480x272_stone.png"
+          },
+          {
+            "Type": "ButtonWithLabel",
+            "Name": "buttonWithLabel1",
+            "X": 175,
+            "Y": 213,
+            "Width": 110,
+            "Height": 50,
+            "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_50_tiny_round_pressed.png",
+            "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_50_tiny_round_action.png",
+            "TextId": "__SingleUse_XVQ6",
+            "PressedColor": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "TextRotation": "0",
+            "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\tiny_round_action.json"
+          },
+          {
+            "Type": "RadioButton",
+            "Name": "radioButton1",
+            "X": 10,
+            "Y": 182,
+            "Width": 36,
+            "Height": 36,
+            "FileNameSelected": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_on_dark.png",
+            "FileNameSelectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_on_pressed.png",
+            "FileNameUnselected": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_off.png",
+            "FileNameUnselectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_off_pressed.png",
+            "RadioButtonGroup": "radioButtonGroup1",
+            "Preset": "alternate_theme\\presets\\radiobutton\\radio\\medium_dark_rounded.json"
+          },
+          {
+            "Type": "RadioButton",
+            "Name": "radioButton2",
+            "X": 10,
+            "Y": 227,
+            "Width": 36,
+            "Height": 36,
+            "FileNameSelected": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_on_dark.png",
+            "FileNameSelectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_on_pressed.png",
+            "FileNameUnselected": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_off.png",
+            "FileNameUnselectedPressed": "__generated\\alternate_theme_images_widgets_radiobutton_radio_medium_rounded_off_pressed.png",
+            "RadioButtonGroup": "radioButtonGroup1",
+            "Preset": "alternate_theme\\presets\\radiobutton\\radio\\medium_dark_rounded.json"
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea1",
+            "X": 54,
+            "Y": 187,
+            "Width": 92,
+            "Height": 27,
+            "TextId": "__SingleUse_T1QO",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea1_1",
+            "X": 54,
+            "Y": 231,
+            "Width": 92,
+            "Height": 28,
+            "TextId": "__SingleUse_A5QC",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "Slider",
+            "Name": "slider1",
+            "X": 36,
+            "Y": 35,
+            "Width": 432,
+            "Height": 32,
+            "IsHorizontalSlider": true,
+            "BackgroundUnselected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_track_large.png",
+            "BackgroundSelected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_filler_large.png",
+            "Indicator": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_rounded_active.png",
+            "BackgroundX": 16,
+            "BackgroundY": 11,
+            "IndicatorMax": 400,
+            "ValueMax": 100,
+            "Preset": "alternate_theme\\presets\\slider\\horizontal\\thick\\large_rounded_active.json"
+          },
+          {
+            "Type": "Slider",
+            "Name": "slider2",
+            "X": 46,
+            "Y": 120,
+            "Width": 432,
+            "Height": 32,
+            "IsHorizontalSlider": true,
+            "BackgroundUnselected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_track_large.png",
+            "BackgroundSelected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_filler_large.png",
+            "Indicator": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_rounded_active.png",
+            "BackgroundX": 16,
+            "BackgroundY": 11,
+            "IndicatorMax": 400,
+            "ValueMax": 100,
+            "Preset": "alternate_theme\\presets\\slider\\horizontal\\thick\\large_rounded_active.json"
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea2",
+            "X": 114,
+            "Y": 17,
+            "Width": 253,
+            "Height": 24,
+            "TextId": "__SingleUse_9T1R",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea3",
+            "X": 114,
+            "Y": 86,
+            "Width": 253,
+            "Height": 24,
+            "TextId": "__SingleUse_ADTF",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            }
+          }
+        ],
+        "Interactions": [
+          {
+            "InteractionName": "Interaction1",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "buttonWithLabel1"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "ButtonStartPresset"
+            }
+          }
+        ]
+      }
+    ],
+    "CustomContainerDefinitions": [],
+    "Name": "STM32F746DISCO_Generator",
+    "Resolution": {
+      "Width": 480,
+      "Height": 272
+    },
+    "SelectedColorDepth": 16,
+    "StartupScreenName": "Screen1",
+    "SelectedStartupLanguage": "GB",
+    "TouchGfxPath": "../Middlewares/ST/touchgfx",
+    "UIPath": ".",
+    "AvailableColorDepths": [
+      16
+    ],
+    "AvailableLCDs": {
+      "16": "LCD16bpp"
+    },
+    "AvailableSections": [
+      "ExtFlashSection",
+      "IntFlashSection"
+    ],
+    "AvailableResolutions": [
+      {
+        "Width": 480,
+        "Height": 272
+      }
+    ],
+    "PhysicalButtons": [],
+    "FrameworkFeatures": {
+      "LCD16bpp": {
+        "Id": "LCD16bpp",
+        "IsEnabled": true
+      }
+    },
+    "GenerateAssetsCommand": "make -f simulator/gcc/Makefile assets -j8",
+    "PostGenerateCommand": "touchgfx update_project --project-file=simulator/msvs/Application.vcxproj",
+    "PostGenerateTargetCommand": "touchgfx update_project",
+    "CompileSimulatorCommand": "make -f simulator/gcc/Makefile -j8",
+    "RunSimulatorCommand": "build\\bin\\simulator.exe",
+    "CompileTargetCommand": "make -f ../gcc/Makefile -j8",
+    "FlashTargetCommand": "make -f ../gcc/Makefile flash -j8",
+    "FlashTargetIntCommandOverride": "make -f ../gcc/Makefile intflash -j8",
+    "LandscapeSkinX": 0,
+    "LandscapeSkinY": 0,
+    "PortraitSkinX": 0,
+    "PortraitSkinY": 0,
+    "DisplayOrientation": "Landscape",
+    "Family": "STM32F7",
+    "SubFamily": "STM32F7x6",
+    "Toolchain": "STM32CubeIDE",
+    "Platform": "m7",
+    "ProjectFile": "../STM32F746G_DISCO.ioc",
+    "OptionalComponentsRoot": "../Middlewares/ST/touchgfx_components",
+    "OptionalComponents": [],
+    "AdditionalFeatures": [
+      "CWRVector",
+      "VectorFonts",
+      "Video"
+    ]
+  },
+  "Version": "4.26.0",
+  "CreatedBy": "4.26.0"
+}
