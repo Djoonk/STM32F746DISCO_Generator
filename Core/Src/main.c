@@ -1,38 +1,39 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
-  * All rights reserved.</center></h2>
-  *
-  * This software component is licensed by ST under Ultimate Liberty license
-  * SLA0044, the "License"; You may not use this file except in compliance with
-  * the License. You may obtain a copy of the License at:
-  *                             www.st.com/SLA0044
-  *	PA4 - DAC
-  * налаштувати таймер 7 на 1кГц +
-  * налаштувати ногодриг +
-  * спробувати змінити колір кнопки при натисканні +
-  * залити на гіт
-  * додати debug
-  * налаштувати DAC
-  * сформувати сигнал синусоїди
-  * прив'язати тривалість синусоїди до ползунка
-  *
-  *
-  *
-  *	Технічна інформація
-  * TIM7 -> APB1 -> 54MHz*2 = 108MHz
-  *
-  *
-  *
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * <h2><center>&copy; Copyright (c) 2020 STMicroelectronics.
+ * All rights reserved.</center></h2>
+ *
+ * This software component is licensed by ST under Ultimate Liberty license
+ * SLA0044, the "License"; You may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at:
+ *                             www.st.com/SLA0044
+ *	PA4 - DAC
+ * 	налаштувати таймер 7 на 1кГц +
+ * 	налаштувати ногодриг +
+ * 	спробувати змінити колір кнопки при натисканні +
+ * 	залити на гіт +
+ * 	додати debug
+ * 	налаштувати DAC
+ * 	сформувати сигнал синусоїди
+ * 	прив'язати тривалість синусоїди до ползунка
+ *
+ *
+ *
+ *	Технічна інформація
+ * 	TIM7 -> APB1 -> 54MHz*2 = 108MHz
+ *
+ * 	Hot key
+ * 		- ctrl + shif + r - навігація по файлам
+ *
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -43,6 +44,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include "signal_gen.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -86,6 +88,7 @@
 CRC_HandleTypeDef hcrc;
 
 DAC_HandleTypeDef hdac;
+DMA_HandleTypeDef hdma_dac1;
 
 DMA2D_HandleTypeDef hdma2d;
 
@@ -128,6 +131,7 @@ static FMC_SDRAM_CommandTypeDef Command;
 void SystemClock_Config(void);
 static void MPU_Config(void);
 static void MX_GPIO_Init(void);
+static void MX_DMA_Init(void);
 static void MX_CRC_Init(void);
 static void MX_DMA2D_Init(void);
 static void MX_FMC_Init(void);
@@ -141,20 +145,22 @@ extern void TouchGFX_Task(void *argument);
 extern void videoTaskFunc(void *argument);
 
 /* USER CODE BEGIN PFP */
-void GetManufacturerId (uint8_t *manufacturer_id);
-void EnableMemoryMappedMode(uint8_t manufacturer_id);  
+void GetManufacturerId(uint8_t *manufacturer_id);
+void EnableMemoryMappedMode(uint8_t manufacturer_id);
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+extern uint16_t sine_table[];
+
 int _write(int file, char *ptr, int len)
 {
-    for (int i = 0; i < len; i++)
-    {
-        ITM_SendChar(ptr[i]);
-    }
-    return len;
+	for(int i = 0; i < len; i ++)
+	{
+		ITM_SendChar(ptr[i]);
+	}
+	return len;
 }
 /* USER CODE END 0 */
 
@@ -198,6 +204,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_CRC_Init();
   MX_DMA2D_Init();
   MX_FMC_Init();
@@ -211,28 +218,35 @@ int main(void)
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
   /* USER CODE BEGIN 2 */
-  printf("SWD worke\n\r");
-  SET_TEST_PIN();
-  GPIOB->BSRR = GPIO_PIN_8;
+	printf("SWD worke\n\r");
+	SET_TEST_PIN();
+	GPIOB->BSRR = GPIO_PIN_8;
+	
+	// Генеруємо таблицю синуса ДО старту FreeRTOS
+	Generete_SineTable(3000);
+	SCB_CleanDCache_by_Addr((uint32_t*) sine_table, SINE_SAMPLES * sizeof(uint16_t));
+	
+	// Запускаємо DAC DMA (без старту таймера)
+	HAL_DAC_Start_DMA(&hdac, DAC1_CHANNEL_1, (uint32_t*) sine_table, SINE_SAMPLES, DAC_ALIGN_12B_R);
   /* USER CODE END 2 */
 
   /* Init scheduler */
   osKernelInitialize();
 
   /* USER CODE BEGIN RTOS_MUTEX */
-  /* add mutexes, ... */
+	/* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
-  /* add semaphores, ... */
+	/* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
 
   /* USER CODE BEGIN RTOS_TIMERS */
-  /* start timers, add new ones, ... */
+	/* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
-  /* add queues, ... */
+	/* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
@@ -246,11 +260,11 @@ int main(void)
   videoTaskHandle = osThreadNew(videoTaskFunc, NULL, &videoTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* add threads, ... */
+	/* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
-  /* add events, ... */
+	/* add events, ... */
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
@@ -260,12 +274,12 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+	while(1)
+	{
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+	}
   /* USER CODE END 3 */
 }
 
@@ -380,7 +394,7 @@ static void MX_DAC_Init(void)
 
   /** DAC channel OUT1 config
   */
-  sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
+  sConfig.DAC_Trigger = DAC_TRIGGER_T7_TRGO;  // Timer 7 TRGO triggers DAC
   sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
   if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
   {
@@ -438,7 +452,7 @@ static void MX_I2C3_Init(void)
 {
 
   /* USER CODE BEGIN I2C3_Init 0 */
-  HAL_Delay(100); //Delay to fix initialization issue on some boards 
+	HAL_Delay(100); //Delay to fix initialization issue on some boards
   /* USER CODE END I2C3_Init 0 */
 
   /* USER CODE BEGIN I2C3_Init 1 */
@@ -569,10 +583,10 @@ static void MX_QUADSPI_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN QUADSPI_Init 2 */
-  uint8_t manufacturer_id;
-  GetManufacturerId (&manufacturer_id);
-  EnableMemoryMappedMode(manufacturer_id);
-  HAL_NVIC_DisableIRQ(QUADSPI_IRQn);
+	uint8_t manufacturer_id;
+	GetManufacturerId( &manufacturer_id);
+	EnableMemoryMappedMode(manufacturer_id);
+	HAL_NVIC_DisableIRQ(QUADSPI_IRQn);
   /* USER CODE END QUADSPI_Init 2 */
 
 }
@@ -612,6 +626,22 @@ static void MX_TIM7_Init(void)
   /* USER CODE BEGIN TIM7_Init 2 */
 
   /* USER CODE END TIM7_Init 2 */
+
+}
+
+/**
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void)
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Stream5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
 
 }
 
@@ -658,60 +688,60 @@ static void MX_FMC_Init(void)
   }
 
   /* USER CODE BEGIN FMC_Init 2 */
-  __IO uint32_t tmpmrd = 0;
+	__IO uint32_t tmpmrd = 0;
 
-    /* Step 1: Configure a clock configuration enable command */
-    Command.CommandMode            = FMC_SDRAM_CMD_CLK_ENABLE;
-    Command.CommandTarget          =  FMC_SDRAM_CMD_TARGET_BANK1;
-    Command.AutoRefreshNumber      = 1;
-    Command.ModeRegisterDefinition = 0;
+	/* Step 1: Configure a clock configuration enable command */
+	Command.CommandMode = FMC_SDRAM_CMD_CLK_ENABLE;
+	Command.CommandTarget = FMC_SDRAM_CMD_TARGET_BANK1;
+	Command.AutoRefreshNumber = 1;
+	Command.ModeRegisterDefinition = 0;
 
-    /* Send the command */
-    HAL_SDRAM_SendCommand(&hsdram1, &Command, SDRAM_TIMEOUT);
+	/* Send the command */
+	HAL_SDRAM_SendCommand( &hsdram1, &Command, SDRAM_TIMEOUT);
 
-    /* Step 2: Insert 100 us minimum delay */
-    /* Inserted delay is equal to 1 ms due to systick time base unit (ms) */
-    HAL_Delay(1);
+	/* Step 2: Insert 100 us minimum delay */
+	/* Inserted delay is equal to 1 ms due to systick time base unit (ms) */
+	HAL_Delay(1);
 
-    /* Step 3: Configure a PALL (precharge all) command */
-    Command.CommandMode            = FMC_SDRAM_CMD_PALL;
-    Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
-    Command.AutoRefreshNumber      = 1;
-    Command.ModeRegisterDefinition = 0;
+	/* Step 3: Configure a PALL (precharge all) command */
+	Command.CommandMode = FMC_SDRAM_CMD_PALL;
+	Command.CommandTarget = FMC_SDRAM_CMD_TARGET_BANK1;
+	Command.AutoRefreshNumber = 1;
+	Command.ModeRegisterDefinition = 0;
 
-    /* Send the command */
-    HAL_SDRAM_SendCommand(&hsdram1, &Command, SDRAM_TIMEOUT);
+	/* Send the command */
+	HAL_SDRAM_SendCommand( &hsdram1, &Command, SDRAM_TIMEOUT);
 
-    /* Step 4: Configure an Auto Refresh command */
-    Command.CommandMode            = FMC_SDRAM_CMD_AUTOREFRESH_MODE;
-    Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
-    Command.AutoRefreshNumber      = 8;
-    Command.ModeRegisterDefinition = 0;
+	/* Step 4: Configure an Auto Refresh command */
+	Command.CommandMode = FMC_SDRAM_CMD_AUTOREFRESH_MODE;
+	Command.CommandTarget = FMC_SDRAM_CMD_TARGET_BANK1;
+	Command.AutoRefreshNumber = 8;
+	Command.ModeRegisterDefinition = 0;
 
-    /* Send the command */
-    HAL_SDRAM_SendCommand(&hsdram1, &Command, SDRAM_TIMEOUT);
+	/* Send the command */
+	HAL_SDRAM_SendCommand( &hsdram1, &Command, SDRAM_TIMEOUT);
 
-    /* Step 5: Program the external memory mode register */
-    tmpmrd = (uint32_t)SDRAM_MODEREG_BURST_LENGTH_1 | \
-             SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL    | \
-             SDRAM_MODEREG_CAS_LATENCY_3            | \
-             SDRAM_MODEREG_OPERATING_MODE_STANDARD  | \
-             SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;
+	/* Step 5: Program the external memory mode register */
+	tmpmrd = (uint32_t) SDRAM_MODEREG_BURST_LENGTH_1 |
+	SDRAM_MODEREG_BURST_TYPE_SEQUENTIAL |
+	SDRAM_MODEREG_CAS_LATENCY_3 |
+	SDRAM_MODEREG_OPERATING_MODE_STANDARD |
+	SDRAM_MODEREG_WRITEBURST_MODE_SINGLE;
 
-    Command.CommandMode            = FMC_SDRAM_CMD_LOAD_MODE;
-    Command.CommandTarget          = FMC_SDRAM_CMD_TARGET_BANK1;
-    Command.AutoRefreshNumber      = 1;
-    Command.ModeRegisterDefinition = tmpmrd;
+	Command.CommandMode = FMC_SDRAM_CMD_LOAD_MODE;
+	Command.CommandTarget = FMC_SDRAM_CMD_TARGET_BANK1;
+	Command.AutoRefreshNumber = 1;
+	Command.ModeRegisterDefinition = tmpmrd;
 
-    /* Send the command */
-    HAL_SDRAM_SendCommand(&hsdram1, &Command, SDRAM_TIMEOUT);
+	/* Send the command */
+	HAL_SDRAM_SendCommand( &hsdram1, &Command, SDRAM_TIMEOUT);
 
-    /* Step 6: Set the refresh rate counter */
-    /* Set the device refresh rate */
-    HAL_SDRAM_ProgramRefreshRate(&hsdram1, REFRESH_COUNT);
+	/* Step 6: Set the refresh rate counter */
+	/* Set the device refresh rate */
+	HAL_SDRAM_ProgramRefreshRate( &hsdram1, REFRESH_COUNT);
 
-    //Deactivate speculative/cache access to first FMC Bank to save FMC bandwidth
-    FMC_Bank1->BTCR[0] = 0x000030D2;
+	//Deactivate speculative/cache access to first FMC Bank to save FMC bandwidth
+	FMC_Bank1->BTCR[0] = 0x000030D2;
   /* USER CODE END FMC_Init 2 */
 }
 
@@ -740,8 +770,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, VSYNC_FREQ_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOB, TEST_PIN_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(GPIOB, TEST_PIN_Pin|VSYNC_FREQ_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(LCD_BL_CTRL_GPIO_Port, LCD_BL_CTRL_Pin, GPIO_PIN_SET);
@@ -791,98 +820,102 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(MCU_ACTIVE_GPIO_Port, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
-  /* USER CODE BEGIN MX_GPIO_Init_2 */
-   // SWO pin init
-   GPIO_InitStruct.Pin       = GPIO_PIN_3;          // PB3 = SWO
-   GPIO_InitStruct.Mode      = GPIO_MODE_AF_PP;     // Alternate Function Push-Pull
-   GPIO_InitStruct.Pull      = GPIO_NOPULL;
-   GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
-   GPIO_InitStruct.Alternate = GPIO_AF0_SWJ;        // AF0 for SWO
+	/* USER CODE BEGIN MX_GPIO_Init_2 */
+	// SWO pin init
+	GPIO_InitStruct.Pin = GPIO_PIN_3;          // PB3 = SWO
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;     // Alternate Function Push-Pull
+	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+	GPIO_InitStruct.Alternate = GPIO_AF0_SWJ;        // AF0 for SWO
 
-   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
 
 // Read manufacturer ID of external QSPI flash
-void GetManufacturerId (uint8_t *manufacturer_id)
+void GetManufacturerId(uint8_t *manufacturer_id)
 {
-  QSPI_CommandTypeDef s_command_id;
+	QSPI_CommandTypeDef s_command_id;
 
-  /* Initialize the read flag status register command */
-  s_command_id.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
-  s_command_id.Instruction       = FLASH_READ_JEDEC_ID;
-  s_command_id.AddressMode       = QSPI_ADDRESS_NONE;
-  s_command_id.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
-  s_command_id.DataMode          = QSPI_DATA_1_LINE;
-  s_command_id.DummyCycles       = 0;
-  s_command_id.NbData            = 1;
-  s_command_id.DdrMode           = QSPI_DDR_MODE_DISABLE;
-  s_command_id.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
-  s_command_id.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
+	/* Initialize the read flag status register command */
+	s_command_id.InstructionMode = QSPI_INSTRUCTION_1_LINE;
+	s_command_id.Instruction = FLASH_READ_JEDEC_ID;
+	s_command_id.AddressMode = QSPI_ADDRESS_NONE;
+	s_command_id.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+	s_command_id.DataMode = QSPI_DATA_1_LINE;
+	s_command_id.DummyCycles = 0;
+	s_command_id.NbData = 1;
+	s_command_id.DdrMode = QSPI_DDR_MODE_DISABLE;
+	s_command_id.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+	s_command_id.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
 
-  /* Configure the command */
-  if (HAL_QSPI_Command(&hqspi, &s_command_id, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
-  {
-	  Error_Handler();
-  }
+	/* Configure the command */
+	if(HAL_QSPI_Command( &hqspi, &s_command_id, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+	{
+		Error_Handler();
+	}
 
-  /* Reception of the data */
-  if (HAL_QSPI_Receive(&hqspi, manufacturer_id, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
-  {
-	  Error_Handler();
-  }
+	/* Reception of the data */
+	if(HAL_QSPI_Receive( &hqspi, manufacturer_id, HAL_QPSI_TIMEOUT_DEFAULT_VALUE) != HAL_OK)
+	{
+		Error_Handler();
+	}
 }
 
 // Enable memory mapped mode for external QSPI flash
-void EnableMemoryMappedMode(uint8_t manufacturer_id)  
+void EnableMemoryMappedMode(uint8_t manufacturer_id)
 {
-  QSPI_CommandTypeDef      s_command;
-  QSPI_MemoryMappedTypeDef s_mem_mapped_cfg;
+	QSPI_CommandTypeDef s_command;
+	QSPI_MemoryMappedTypeDef s_mem_mapped_cfg;
 
-  /* Configure the command for the read instruction */
-  s_command.InstructionMode   = QSPI_INSTRUCTION_1_LINE;
-  s_command.Instruction       = FLASH_FAST_READ_QUAD_IO;
-  s_command.AddressMode       = QSPI_ADDRESS_4_LINES;
-  s_command.AddressSize       = QSPI_ADDRESS_24_BITS;
-  s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
-  s_command.DataMode          = QSPI_DATA_4_LINES;
-  
-  // Set dummy cycles according to manufacturer ID
-  s_command.DummyCycles       = manufacturer_id == FLASH_REVC03_MANUFACTURER_ID ? FLASH_W25Q128J_DUMMY_CYCLES : FLASH_N25Q128A_DUMMY_CYCLES;
+	/* Configure the command for the read instruction */
+	s_command.InstructionMode = QSPI_INSTRUCTION_1_LINE;
+	s_command.Instruction = FLASH_FAST_READ_QUAD_IO;
+	s_command.AddressMode = QSPI_ADDRESS_4_LINES;
+	s_command.AddressSize = QSPI_ADDRESS_24_BITS;
+	s_command.AlternateByteMode = QSPI_ALTERNATE_BYTES_NONE;
+	s_command.DataMode = QSPI_DATA_4_LINES;
 
-  s_command.DdrMode           = QSPI_DDR_MODE_DISABLE;
-  s_command.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
-  s_command.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
-  
-  /* Configure the memory mapped mode */
-  s_mem_mapped_cfg.TimeOutActivation = QSPI_TIMEOUT_COUNTER_DISABLE;
-  s_mem_mapped_cfg.TimeOutPeriod     = 0;
-  
-  if (HAL_QSPI_MemoryMapped(&hqspi, &s_command, &s_mem_mapped_cfg) != HAL_OK)
-  {
-    Error_Handler();
-  }
+	// Set dummy cycles according to manufacturer ID
+	s_command.DummyCycles =
+						manufacturer_id == FLASH_REVC03_MANUFACTURER_ID ? FLASH_W25Q128J_DUMMY_CYCLES : FLASH_N25Q128A_DUMMY_CYCLES;
+
+	s_command.DdrMode = QSPI_DDR_MODE_DISABLE;
+	s_command.DdrHoldHalfCycle = QSPI_DDR_HHC_ANALOG_DELAY;
+	s_command.SIOOMode = QSPI_SIOO_INST_EVERY_CMD;
+
+	/* Configure the memory mapped mode */
+	s_mem_mapped_cfg.TimeOutActivation = QSPI_TIMEOUT_COUNTER_DISABLE;
+	s_mem_mapped_cfg.TimeOutPeriod = 0;
+
+	if(HAL_QSPI_MemoryMapped( &hqspi, &s_command, &s_mem_mapped_cfg) != HAL_OK)
+	{
+		Error_Handler();
+	}
 }
 
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
+ * @brief  Function implementing the defaultTask thread.
+ * @param  argument: Not used
+ * @retval None
+ */
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
-  /* Infinite loop */
-  for(;;)
-  {
-    osDelay(100);
-  }
+	// Запускаємо таймер для DAC після старту FreeRTOS
+	HAL_TIM_Base_Start(&htim7);
+	
+	/* Infinite loop */
+	for(;;)
+	{
+		osDelay(100);
+	}
   /* USER CODE END 5 */
 }
 
@@ -952,7 +985,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
+	/* User can add his own implementation to report the HAL error return state */
 
   /* USER CODE END Error_Handler_Debug */
 }
