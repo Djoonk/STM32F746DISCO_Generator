@@ -23,8 +23,6 @@
  * 	сформувати сигнал синусоїди
  * 	прив'язати тривалість синусоїди до ползунка
  *
- *
- *
  *	Технічна інформація
  * 	TIM7 -> APB1 -> 54MHz*2 = 108MHz
  *
@@ -45,6 +43,9 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "signal_gen.h"
+#include <stdio.h>   // для vsnprintf
+#include <stdarg.h>  // для va_start, va_end, va_list
+#include "stm32f7xx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -162,6 +163,23 @@ int _write(int file, char *ptr, int len)
 	}
 	return len;
 }
+
+//******************************* Функція дебагу *******************************//
+void debug(const char *fmt, ...)
+{
+    char buffer[256];
+    va_list args;
+    va_start(args, fmt);
+    int len = vsnprintf(buffer, sizeof(buffer), fmt, args);
+    va_end(args);
+
+    for(int idx = 0; idx < len; idx++)
+    {
+        // Використовуємо стандартну функцію CMSIS для відправки через ITM порти
+        // Порт 0 зазвичай використовується за замовчуванням для дебагу
+        ITM_SendChar(buffer[idx]);
+    }
+}
 /* USER CODE END 0 */
 
 /**
@@ -218,10 +236,9 @@ int main(void)
   /* Call PreOsInit function */
   MX_TouchGFX_PreOSInit();
   /* USER CODE BEGIN 2 */
-	printf("SWD worke\n\r");
+	debug("SWD worke\n\r");
 	SET_TEST_PIN();
-	GPIOB->BSRR = GPIO_PIN_8;
-	
+
 	// Генеруємо таблицю синуса ДО старту FreeRTOS
 	Generete_SineTable(3000);
 	SCB_CleanDCache_by_Addr((uint32_t*) sine_table, SINE_SAMPLES * sizeof(uint16_t));
@@ -394,7 +411,7 @@ static void MX_DAC_Init(void)
 
   /** DAC channel OUT1 config
   */
-  sConfig.DAC_Trigger = DAC_TRIGGER_T7_TRGO;  // Timer 7 TRGO triggers DAC
+  sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
   sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
   if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
   {
@@ -609,9 +626,9 @@ static void MX_TIM7_Init(void)
 
   /* USER CODE END TIM7_Init 1 */
   htim7.Instance = TIM7;
-  htim7.Init.Prescaler = 0;
+  htim7.Init.Prescaler = 1000-1;
   htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim7.Init.Period = 108;
+  htim7.Init.Period = 108-1;
   htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_Base_Init(&htim7) != HAL_OK)
   {
@@ -822,11 +839,11 @@ static void MX_GPIO_Init(void)
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 	/* USER CODE BEGIN MX_GPIO_Init_2 */
 	// SWO pin init
-	GPIO_InitStruct.Pin = GPIO_PIN_3;          // PB3 = SWO
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;     // Alternate Function Push-Pull
+	GPIO_InitStruct.Pin = GPIO_PIN_3;                   // PB3 = SWO
+	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;             // Alternate Function Push-Pull
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	GPIO_InitStruct.Alternate = GPIO_AF0_SWJ;        // AF0 for SWO
+	GPIO_InitStruct.Alternate = GPIO_AF0_SWJ;       	// AF0 for SWO
 
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
   /* USER CODE END MX_GPIO_Init_2 */
