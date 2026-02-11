@@ -12,6 +12,13 @@
             "RelativeFilename": "__generated\\dark_theme_images_backgrounds_480x272_stone.png"
           },
           {
+            "Type": "Image",
+            "Name": "image1_1",
+            "Width": 480,
+            "Height": 272,
+            "RelativeFilename": "__generated\\dark_theme_images_backgrounds_480x272_stone.png"
+          },
+          {
             "Type": "ButtonWithLabel",
             "Name": "buttonWithLabel1",
             "X": 175,
@@ -90,43 +97,43 @@
           {
             "Type": "Slider",
             "Name": "slider1",
-            "X": 36,
-            "Y": 35,
-            "Width": 432,
+            "X": 24,
+            "Y": 33,
+            "Width": 332,
             "Height": 32,
             "IsHorizontalSlider": true,
-            "BackgroundUnselected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_track_large.png",
-            "BackgroundSelected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_filler_large.png",
-            "Indicator": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_rounded_active.png",
+            "BackgroundUnselected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_track_medium.png",
+            "BackgroundSelected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_filler_medium.png",
+            "Indicator": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_rounded_light.png",
             "BackgroundX": 16,
             "BackgroundY": 11,
-            "IndicatorMax": 400,
+            "IndicatorMax": 300,
             "ValueMax": 100,
-            "Preset": "alternate_theme\\presets\\slider\\horizontal\\thick\\large_rounded_active.json"
+            "Preset": "alternate_theme\\presets\\slider\\horizontal\\thick\\medium_rounded.json"
           },
           {
             "Type": "Slider",
             "Name": "slider2",
-            "X": 46,
-            "Y": 120,
-            "Width": 432,
+            "X": 24,
+            "Y": 91,
+            "Width": 332,
             "Height": 32,
             "IsHorizontalSlider": true,
-            "BackgroundUnselected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_track_large.png",
-            "BackgroundSelected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_filler_large.png",
+            "BackgroundUnselected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_track_medium.png",
+            "BackgroundSelected": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_filler_medium.png",
             "Indicator": "__generated\\alternate_theme_images_widgets_slider_horizontal_thick_rounded_active.png",
             "BackgroundX": 16,
             "BackgroundY": 11,
-            "IndicatorMax": 400,
+            "IndicatorMax": 300,
             "ValueMax": 100,
-            "Preset": "alternate_theme\\presets\\slider\\horizontal\\thick\\large_rounded_active.json"
+            "Preset": "alternate_theme\\presets\\slider\\horizontal\\thick\\medium_rounded_active.json"
           },
           {
             "Type": "TextArea",
             "Name": "textArea2",
-            "X": 114,
-            "Y": 17,
-            "Width": 253,
+            "X": 24,
+            "Y": 9,
+            "Width": 195,
             "Height": 24,
             "TextId": "__SingleUse_9T1R",
             "TextRotation": "0",
@@ -139,9 +146,9 @@
           {
             "Type": "TextArea",
             "Name": "textArea3",
-            "X": 114,
-            "Y": 86,
-            "Width": 253,
+            "X": 24,
+            "Y": 67,
+            "Width": 162,
             "Height": 24,
             "TextId": "__SingleUse_ADTF",
             "TextRotation": "0",
@@ -149,6 +156,150 @@
               "Red": 255,
               "Green": 255,
               "Blue": 255
+            }
+          },
+          {
+            "Type": "Slider",
+            "Name": "slider3",
+            "X": 379,
+            "Y": 27,
+            "Width": 32,
+            "Height": 232,
+            "BackgroundUnselected": "__generated\\alternate_theme_images_widgets_slider_vertical_thick_track_small.png",
+            "BackgroundSelected": "__generated\\alternate_theme_images_widgets_slider_vertical_thick_filler_small.png",
+            "Indicator": "__generated\\alternate_theme_images_widgets_slider_vertical_thick_round_light.png",
+            "BackgroundX": 11,
+            "BackgroundY": 16,
+            "IndicatorMax": 200,
+            "ValueMax": 100,
+            "Preset": "alternate_theme\\presets\\slider\\vertical\\thick\\small_round.json"
+          },
+          {
+            "Type": "Slider",
+            "Name": "slider4",
+            "X": 432,
+            "Y": 27,
+            "Width": 32,
+            "Height": 232,
+            "BackgroundUnselected": "__generated\\alternate_theme_images_widgets_slider_vertical_thick_track_small.png",
+            "BackgroundSelected": "__generated\\alternate_theme_images_widgets_slider_vertical_thick_filler_small.png",
+            "Indicator": "__generated\\alternate_theme_images_widgets_slider_vertical_thick_round_active.png",
+            "BackgroundX": 11,
+            "BackgroundY": 16,
+            "IndicatorMax": 200,
+            "ValueMax": 100,
+            "Preset": "alternate_theme\\presets\\slider\\vertical\\thick\\small_round_active.json"
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea4",
+            "X": 429,
+            "Y": 15,
+            "Width": 42,
+            "Height": 24,
+            "TextId": "__SingleUse_QIMP",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea5",
+            "X": 373,
+            "Y": 15,
+            "Width": 45,
+            "Height": 24,
+            "TextId": "__SingleUse_OSTZ",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea8",
+            "X": 347,
+            "Y": 128,
+            "Width": 42,
+            "Height": 25,
+            "TextId": "__SingleUse_885K",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "Wildcard1": {
+              "TextId": "__SingleUse_ZB3E",
+              "UseBuffer": true,
+              "BufferSize": 5
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea7",
+            "X": 198,
+            "Y": 111,
+            "Width": 42,
+            "Height": 25,
+            "TextId": "__SingleUse_1Y3U",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "Wildcard1": {
+              "TextId": "__SingleUse_GH8I",
+              "UseBuffer": true,
+              "BufferSize": 5
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea6",
+            "X": 198,
+            "Y": 53,
+            "Width": 42,
+            "Height": 25,
+            "TextId": "__SingleUse_OE97",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "Wildcard1": {
+              "TextId": "__SingleUse_NRS2",
+              "UseBuffer": true,
+              "BufferSize": 5
+            }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea9",
+            "X": 406,
+            "Y": 128,
+            "Width": 42,
+            "Height": 25,
+            "TextId": "__SingleUse_PQSF",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "Wildcard1": {
+              "TextId": "__SingleUse_SVPK",
+              "UseBuffer": true,
+              "BufferSize": 5
             }
           }
         ],

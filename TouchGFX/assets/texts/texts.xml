@@ -13,10 +13,40 @@
       </Text>
     </TextGroup>
     <TextGroup Id="Unsorted">
-      <Text Id="__SingleUse_ADTF" Alignment="Center" TypographyId="Default">
+      <Text Id="__SingleUse_NRS2" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">50</Translation>
+      </Text>
+      <Text Id="__SingleUse_OE97" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_GH8I" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">50</Translation>
+      </Text>
+      <Text Id="__SingleUse_1Y3U" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_SVPK" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">50</Translation>
+      </Text>
+      <Text Id="__SingleUse_PQSF" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_ZB3E" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">50</Translation>
+      </Text>
+      <Text Id="__SingleUse_885K" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_OSTZ" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">Vsqr</Translation>
+      </Text>
+      <Text Id="__SingleUse_QIMP" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">Vsin</Translation>
+      </Text>
+      <Text Id="__SingleUse_ADTF" Alignment="Left" TypographyId="Default">
         <Translation Language="GB">frequency SINE</Translation>
       </Text>
-      <Text Id="__SingleUse_9T1R" Alignment="Center" TypographyId="Default">
+      <Text Id="__SingleUse_9T1R" Alignment="Left" TypographyId="Default">
         <Translation Language="GB">frequency SQUARE</Translation>
       </Text>
       <Text Id="__SingleUse_A5QC" Alignment="Left" TypographyId="Default">

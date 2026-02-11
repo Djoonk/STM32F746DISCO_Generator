@@ -1,0 +1,48 @@
+{
+    "configurations": [
+        {
+            "name": "STM32F7",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Core/Inc",
+                "${workspaceFolder}/Drivers/CMSIS/Include",
+                "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32F7xx/Include",
+                "${workspaceFolder}/Drivers/STM32F7xx_HAL_Driver/Inc",
+                "${workspaceFolder}/Drivers/STM32F7xx_HAL_Driver/Inc/Legacy",
+                "${workspaceFolder}/Drivers/BSP/Components/ft5336",
+                "${workspaceFolder}/LIBJPEG/App",
+                "${workspaceFolder}/LIBJPEG/Target",
+                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/include",
+                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2",
+                "${workspaceFolder}/Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM7/r0p1",
+                "${workspaceFolder}/Middlewares/Third_Party/LibJPEG/include",
+                "${workspaceFolder}/Middlewares/ST/touchgfx/framework/include",
+                "${workspaceFolder}/TouchGFX/App",
+                "${workspaceFolder}/TouchGFX/target",
+                "${workspaceFolder}/TouchGFX/target/generated",
+                "${workspaceFolder}/TouchGFX/generated/fonts/include",
+                "${workspaceFolder}/TouchGFX/generated/images/include",
+                "${workspaceFolder}/TouchGFX/generated/texts/include",
+                "${workspaceFolder}/TouchGFX/generated/gui_generated/include",
+                "${workspaceFolder}/TouchGFX/gui/include",
+                "${workspaceFolder}/STM32CubeIDE/Signal_gen",
+                "C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/arm-none-eabi/include"
+            ],
+            "defines": [
+                "STM32F746xx",
+                "USE_HAL_DRIVER",
+                "DEBUG",
+                "ARM_MATH_CM7"
+            ],
+            "compilerPath": "C:/ST/STM32CubeIDE_2.0.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.100.202509120712/tools/bin/arm-none-eabi-gcc.exe",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "gcc-arm",
+            "forcedInclude": [
+                "${workspaceFolder}/Core/Inc/main.h"
+            ],
+            "compileCommands": "${workspaceFolder}/build/Debug/compile_commands.json"
+        }
+    ],
+    "version": 4
+}
