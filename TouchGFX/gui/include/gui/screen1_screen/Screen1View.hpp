@@ -14,6 +14,10 @@ public:
 
     virtual void ButtonStartPresset();
 
+    virtual void setSlider1Value(int value);
+    virtual void setSlider2Value(int value);
+    virtual void setSlider3Value(int value);
+    virtual void setSlider4Value(int value);
 
     virtual void ButtonTextUpdate();
 

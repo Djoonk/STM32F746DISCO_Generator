@@ -14,27 +14,27 @@
     </TextGroup>
     <TextGroup Id="Unsorted">
       <Text Id="__SingleUse_NRS2" Alignment="Left" TypographyId="Default">
-        <Translation Language="GB">50</Translation>
+        <Translation Language="GB">0&#10;</Translation>
       </Text>
       <Text Id="__SingleUse_OE97" Alignment="Center" TypographyId="Default">
         <Translation Language="GB">&lt;value&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_GH8I" Alignment="Left" TypographyId="Default">
-        <Translation Language="GB">50</Translation>
+        <Translation Language="GB">0&#10;</Translation>
       </Text>
       <Text Id="__SingleUse_1Y3U" Alignment="Center" TypographyId="Default">
         <Translation Language="GB">&lt;value&gt;</Translation>
       </Text>
-      <Text Id="__SingleUse_SVPK" Alignment="Left" TypographyId="Default">
-        <Translation Language="GB">50</Translation>
+      <Text Id="__SingleUse_SVPK" Alignment="Left" TypographyId="Float">
+        <Translation Language="GB">0.1</Translation>
       </Text>
-      <Text Id="__SingleUse_PQSF" Alignment="Center" TypographyId="Default">
+      <Text Id="__SingleUse_PQSF" Alignment="Center" TypographyId="Float">
         <Translation Language="GB">&lt;value&gt;</Translation>
       </Text>
-      <Text Id="__SingleUse_ZB3E" Alignment="Left" TypographyId="Default">
-        <Translation Language="GB">50</Translation>
+      <Text Id="__SingleUse_ZB3E" Alignment="Left" TypographyId="Float">
+        <Translation Language="GB">0.1</Translation>
       </Text>
-      <Text Id="__SingleUse_885K" Alignment="Center" TypographyId="Default">
+      <Text Id="__SingleUse_885K" Alignment="Center" TypographyId="Float">
         <Translation Language="GB">&lt;value&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_OSTZ" Alignment="Left" TypographyId="Default">
@@ -61,8 +61,9 @@
     </TextGroup>
   </Texts>
   <Typographies>
-    <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacterRanges="0-9" />
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Float" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacters="." WildcardCharacterRanges="0-9" />
   </Typographies>
 </TextDatabase>

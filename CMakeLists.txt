@@ -24,6 +24,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # 2. Підключення генерації CubeMX
 add_subdirectory(cmake/stm32cubemx)
 
+# Add touchgfx generated sources and libraries
+add_subdirectory(cmake/touchgfx)
+
 # 3. Автоматичний пошук усіх сирсів TouchGFX (вирішує undefined reference)
 file(GLOB_RECURSE TOUCHGFX_SOURCES 
     "TouchGFX/gui/src/*.cpp"

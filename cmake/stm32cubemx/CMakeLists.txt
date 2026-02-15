@@ -26,7 +26,6 @@ set(MX_Include_Dirs
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/CMSIS/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/../../Drivers/BSP/Components/ft5336
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../Drivers/BSP/STM32746G-Discovery
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../STM32CubeIDE/Signal_gen
 )
 
 # STM32CubeMX generated application sources
@@ -49,7 +48,6 @@ set(MX_Application_Src
     ${CMAKE_CURRENT_SOURCE_DIR}/../../TouchGFX/target/TouchGFXHAL.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../TouchGFX/target/STM32TouchController.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../TouchGFX/target/TouchGFXGPIO.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../STM32CubeIDE/Signal_gen/signal_gen.c
     ${CMAKE_CURRENT_SOURCE_DIR}/../../startup_stm32f746xx.s
 )
 
@@ -161,9 +159,7 @@ set(MX_LINK_DIRS
 set(MX_LINK_LIBS 
     STM32_Drivers
     ${TOOLCHAIN_LINK_LIBRARIES}
-    LibJPEG
-	FreeRTOS
-	
+    LibJPEG	FreeRTOS	
 )
 # Interface library for includes and symbols
 add_library(stm32cubemx INTERFACE)
