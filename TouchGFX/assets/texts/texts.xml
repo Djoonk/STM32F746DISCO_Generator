@@ -13,6 +13,12 @@
       </Text>
     </TextGroup>
     <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_7WDT" Alignment="Left" TypographyId="Float">
+        <Translation Language="GB">Hz</Translation>
+      </Text>
+      <Text Id="__SingleUse_I757" Alignment="Left" TypographyId="Float">
+        <Translation Language="GB">Hz</Translation>
+      </Text>
       <Text Id="__SingleUse_NRS2" Alignment="Left" TypographyId="Default">
         <Translation Language="GB">0&#10;</Translation>
       </Text>
@@ -64,6 +70,6 @@
     <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacterRanges="0-9" />
     <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
     <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
-    <Typography Id="Float" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacters="." WildcardCharacterRanges="0-9" />
+    <Typography Id="Float" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacters="." WildcardCharacterRanges="0-9,A-Z,a-z" />
   </Typographies>
 </TextDatabase>

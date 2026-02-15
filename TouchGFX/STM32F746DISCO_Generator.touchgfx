@@ -245,8 +245,8 @@
           {
             "Type": "TextArea",
             "Name": "textArea7",
-            "X": 198,
-            "Y": 121,
+            "X": 265,
+            "Y": 67,
             "Width": 42,
             "Height": 25,
             "TextId": "__SingleUse_1Y3U",
@@ -265,8 +265,8 @@
           {
             "Type": "TextArea",
             "Name": "textArea6",
-            "X": 197,
-            "Y": 65,
+            "X": 266,
+            "Y": 9,
             "Width": 42,
             "Height": 25,
             "TextId": "__SingleUse_OE97",
@@ -301,6 +301,38 @@
               "UseBuffer": true,
               "BufferSize": 5
             }
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea10",
+            "X": 308,
+            "Y": 10,
+            "Width": 26,
+            "Height": 24,
+            "TextId": "__SingleUse_I757",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true
+          },
+          {
+            "Type": "TextArea",
+            "Name": "textArea10_1",
+            "X": 307,
+            "Y": 68,
+            "Width": 26,
+            "Height": 24,
+            "TextId": "__SingleUse_7WDT",
+            "TextRotation": "0",
+            "Color": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "AutoSize": true
           }
         ],
         "Interactions": [
