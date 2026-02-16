@@ -52,6 +52,7 @@
 #include <stdio.h>   // для vsnprintf
 #include <stdarg.h>  // для va_start, va_end, va_list
 #include "stm32f7xx.h"
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -87,7 +88,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+bool dacStart = true;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -246,8 +247,8 @@ int main(void)
 	SET_TEST_PIN();
 
 	// Генеруємо таблицю синуса ДО старту FreeRTOS
-	Generete_SineTable(3000);
-	SCB_CleanDCache_by_Addr((uint32_t*) sine_table, SINE_SAMPLES * sizeof(uint16_t));
+//	Generete_SineTable(3000);
+//	SCB_CleanDCache_by_Addr((uint32_t*) sine_table, SINE_SAMPLES * sizeof(uint16_t));
 	
 	// Запускаємо DAC DMA (без старту таймера)
 	HAL_DAC_Start_DMA(&hdac, DAC1_CHANNEL_1, (uint32_t*) sine_table, SINE_SAMPLES, DAC_ALIGN_12B_R);
@@ -417,7 +418,7 @@ static void MX_DAC_Init(void)
 
   /** DAC channel OUT1 config
   */
-  sConfig.DAC_Trigger = DAC_TRIGGER_NONE;
+  sConfig.DAC_Trigger = DAC_TRIGGER_T7_TRGO;
   sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
   if (HAL_DAC_ConfigChannel(&hdac, &sConfig, DAC_CHANNEL_1) != HAL_OK)
   {
@@ -632,7 +633,7 @@ static void MX_TIM7_Init(void)
 
   /* USER CODE END TIM7_Init 1 */
   htim7.Instance = TIM7;
-  htim7.Init.Prescaler = 1000-1;
+  htim7.Init.Prescaler = 0;
   htim7.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim7.Init.Period = 108-1;
   htim7.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
@@ -932,8 +933,16 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
 	// Запускаємо таймер для DAC після старту FreeRTOS
-	HAL_TIM_Base_Start(&htim7);
 	
+//	if(dacStart)
+//	{
+//		HAL_TIM_Base_Start(&htim7);
+//	}else
+//	{
+//		HAL_TIM_Base_Stop(&htim7);
+//	}
+
+
 	/* Infinite loop */
 	for(;;)
 	{
